@@ -1,0 +1,46 @@
+.container-send{
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    width: 95%;
+    max-width: 1000px;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.50);
+    background: #000;
+    height: 90%;
+    max-height: 67px;
+    margin: 0px auto 10px auto;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    #mensagem {
+        width: calc(100% - 80px);
+        height: 100%;
+        background: none;
+        outline: none;
+        font-size: 1rem;
+        resize: none;
+        color: white;
+        border: none
+    };
+    .enviar{
+        background: none;
+        color: $cor-da-borda;
+        font-size: 1.3em;
+        outline: none;
+        cursor: pointer;
+        border: none;
+        text-decoration: underline;
+        transition: 1s;
+        text-transform: capitalize;
+        position: absolute;
+        right: 1%;
+        top: 50%; 
+        transform: translate(-50%, -50%)
+        
+    }
+};
+.enviar:hover {
+}

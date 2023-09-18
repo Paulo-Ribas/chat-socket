@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://kit.fontawesome.com/dbac956282.js" crossorigin="anonymous"></script>
+    <title>papobate.chat - nickname</title>
+</head>
+<body>
+    <div id="container-chat">
+        <div class="btn-container">
+            <button id="changeTheme">change theme</button>
+        </div>
+        <div class="container-mensagens">
+            
+        </div> <!--fim container-mensagens-->
+        <div class="container-send">
+            <textarea id="mensagem" maxlength="500" placeholder="Digite Sua Mensagem" value=""> </textarea>
+                
+            <button class="enviar"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+
+
+
+    <script>
+        const socket = io('http://localhost:1111/')
+        const botao = document.querySelector('.enviar')
+        const changeTheme = document.getElementById('changeTheme')
+        const mensagem = document.querySelector('textarea')
+        const containerMsg = document.querySelector('.container-mensagens')
+        let currentBackground = ''
+        let baixo = true
+        let setarScroll
+        
+        botao.addEventListener('click', enviarMensagem)
+        function enviarMensagem() {
+            console.log('<%=color%>')
+            socket.emit('mensagem', {user: '<%=nome%>', mensagem: `${mensagem.value}`, color: '<%=color%>'})
+            setTimeout(() => {
+                mensagem.value = null
+            }, 100);
+            containerMsg.scrollTop = containerMsg.scrollHeight
+        }
+        changeTheme.addEventListener('click', changeBackgroundTheme)
+        function changeBackgroundTheme(){
+            let themes = ['/img/background.jpg', '/img/background1.jpg', '/img/background2.jpg', '/img/background3.jpg',
+                            '/img/background4.jpg', '/img/background5.jpg', '/img/background6.jpg', '/img/background7.jpg']
+            let background = getBackground()
+            if(background === currentBackground) return changeBackgroundTheme()
+            currentBackground = background
+            document.querySelector('body').style.backgroundImage = `url(${currentBackground})`
+        }
+        function getBackground(backgroundChoiced) {
+            let themes = ['/img/background.jpg', '/img/background1.jpg', '/img/background2.jpg', '/img/background3.jpg',
+                '/img/background4.jpg', '/img/background5.jpg', '/img/background6.jpg', '/img/background7.jpg']
+            let background =  themes[parseInt(Math.random() * 7)]
+            return background
+            
+        }
+        document.addEventListener('keypress', (key) => {
+            if (key.code === 'Enter' && !key.shiftKey) {
+                enviarMensagem()
+                
+            }
+        })
+        document.addEventListener('submit', (e) => {
+                    e.preventDefault()
+                    enviarMensagem()
+
+               
+            })
+
+        containerMsg.addEventListener('scroll', e=> {
+            console.log('heigth: ' +containerMsg.scrollHeight)
+            console.log('top: ' + containerMsg.scrollTop)
+            console.log('a sobra do top e height: ' + (containerMsg.scrollHeight - containerMsg.scrollTop))
+            if (containerMsg.scrollHeight - containerMsg.scrollTop <= 700) {
+                baixo = true
+                
+            }
+            else {
+                baixo = false
+                setarScroll = containerMsg.scrollTop
+            }
+            
+        })
+
+        socket.on('renderizarMensagem', renderizarMensagem => {
+            
+            //em ordem da estrutura das mensagens
+            const container = document.querySelector('.container-mensagens')
+            const conteudo = document.createElement('div')
+            const mensagemBox = document.createElement('div')
+            const nomeContainer = document.createElement('div')
+            const h3 = document.createElement('h3')
+            const mensagemEscrita = document.createElement('div')
+            const p = document.createElement('p')
+            const time = document.createElement('time')
+
+            conteudo.classList.add('conteudo')
+            mensagemBox.classList.add('mensagem-box')
+            nomeContainer.classList.add('name')
+            mensagemEscrita.classList.add('mensagem-escrita')
+            p.classList.add('mensagem-enviada')
+            time.setAttribute('datetime', "2023-03-01")
+            h3.style.color = renderizarMensagem.color
+            console.log(renderizarMensagem)
+
+
+            if (renderizarMensagem.user != "<%=nome%>") {
+                conteudo.style.flexDirection = "row-reverse"
+            }
+
+            h3.innerHTML = renderizarMensagem.user
+            p.innerHTML = renderizarMensagem.mensagem
+
+            mensagemEscrita.appendChild(p)
+            mensagemEscrita.appendChild(time)
+
+            nomeContainer.appendChild(h3)
+            mensagemBox.appendChild(nomeContainer)
+            mensagemBox.appendChild(mensagemEscrita)
+
+            
+            conteudo.appendChild(mensagemBox)
+
+            container.appendChild(conteudo)
+            
+            if (baixo === true || renderizarMensagem.user === "<%=nome%>") {
+                containerMsg.scrollTop = containerMsg.scrollHeight
+                
+            }
+            else {
+                containerMsg.scrollTop = setarScroll
+            }
+            
+
+        })
+    </script>
+</body>
+</html>

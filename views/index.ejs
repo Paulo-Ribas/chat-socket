@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://kit.fontawesome.com/dbac956282.js" crossorigin="anonymous"></script>
+    <title>papobate.chat</title>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <% if (erro) { %>
+                <div class="erro">
+                    <p><%=erro%></p>
+                </div>
+            <%}%>
+            <div class="container-title">
+                <h1>papobate.chat</h1>
+                <img src="/img/titulobatepapo.png">
+            </div>
+            <div class="aviso">
+                <span>esse chat é para demonstrar conhecimentos em socket.io e em criar aplicação como essa, não irei percistir as mensagens com banco de dados pois o foco não é ser uma aplicação "real" e por isso, eu não irei dedicar tempo em verificar as mensagens enviadas no chat pois não tenho controle sob quem manda.</span>
+            </div>
+            <form action="/pseudocadastro" method="post">
+                <div class="nickname-container">
+                    <label for="nome">Nome</label>
+                    <input type="text" name="nome" id="nome" required class="name" placeholder="nickname">
+                    <i class="fa-solid fa-gear gear"></i>
+                    <input type="color" name="color" value="#3333">
+                </div>
+                <input type="submit" value="Start">
+            </form>
+        </div> <!--fim container-->
+    </main>
+    <script>
+        let gear = document.querySelector('.gear')
+        let colorInput = document.querySelector('input[type="color"]')
+        let nickname = document.querySelector('input[type="text"]')
+        let nickNameContainer = document.querySelector('.nickname-container')
+        gear.addEventListener('click', e =>{
+            colorInput.click()
+        })
+        colorInput.addEventListener('input', e => {
+            gear.style.color = e.target.value
+            nickname.style.color = e.target.value
+            nickNameContainer.style.border = `2px solid ${e.target.value}`
+        })
+    </script>
+</body>
+</html> <!-- certo, pausa para fazer algo para comer lol-->
