@@ -133,7 +133,7 @@ io.on('connection', cliente => {
             }
         })
         if(count === acharPalavra.length) {
-            mensagemFinal = 'escrevi só espaços em branco então mamei o de cima'
+            mensagemFinal = 'escrevi só espaços em branco'
         }
         io.emit('renderizarMensagem', {user, mensagem: mensagemFinal, color})
        
